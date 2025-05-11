@@ -1,6 +1,3 @@
-<script setup lang="ts">
-</script>
-
 <template>
   <main>
     <header>
@@ -20,8 +17,8 @@
           <li>Listas</li>
             <ul>
               <li>Corretora</li>
-              <li>Tipo de Investimento</li>
               <li>Investimento</li>
+              <li>Tipo de Investimento</li>
             </ul>
           <li>Investimentos</li>
         </ul>
@@ -38,6 +35,9 @@
     </div>
   </main>
 </template>
+
+<script lang="ts">
+</script>
 
 <style scoped>
   main {
@@ -79,8 +79,9 @@
     height: 100%;
     background-color: #242424;
     color: #ffffff;
-    padding: 1em;
-    padding-top: 50px
+    padding-left: 1em;
+    padding-top: 50px;
+    padding-right: 50px;
   }
 
   aside ul {
