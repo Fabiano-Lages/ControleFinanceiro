@@ -1,8 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import DashBoard from '../views/DashBoard.vue';
 
 const roteador = createRouter({
     history: createWebHistory(),
     routes: [ 
+        {
+            path: "/",
+            name: "DashBoard",
+            component: DashBoard
+        }
     ]
 });
 
