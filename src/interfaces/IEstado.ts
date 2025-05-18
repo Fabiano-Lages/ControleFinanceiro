@@ -1,3 +1,3 @@
-export default interface IEstado {
+export interface IEstado {
    usuario: string,
 }

@@ -48,5 +48,10 @@ export const estrutura = [
       tabela: 'movimento',
       campos: ["idInvestimento", "data",  "valor", "quantidade", "total"],
       indices: ["idInvestimento", "data"]
+   },
+   {
+      tabela: "usuario",
+      campos: ["nome", "email", "senha"],
+      indices: ["nome", "email"]
    }
 ];

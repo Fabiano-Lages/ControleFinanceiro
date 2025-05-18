@@ -158,7 +158,7 @@ export const banco = {
       return(
          new Promise((resolve, reject) => {
             if(banco.db) {
-               const transaction = banco.db.transaction(banco.db.objectStoreNames, 'readwrite');
+               const transaction = banco.db.transaction(Array.from(banco.db.objectStoreNames), 'readwrite');
                let storesProcessed = 0;
 
                Object.keys(bancoJson).forEach(storeName  => {
@@ -191,7 +191,7 @@ export const banco = {
          new Promise((resolve, reject) => {
             const _db : IDBDatabase | null = banco.db;
             if(_db) {
-               const transaction = _db.transaction(_db.objectStoreNames, 'readonly');
+               const transaction = _db.transaction(Array.from(_db.objectStoreNames), 'readonly');
                const exportData: Record<string, object[]> = {};
          
                let storesProcessed = 0;

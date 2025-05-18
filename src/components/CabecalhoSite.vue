@@ -5,7 +5,7 @@
       <div class="controle">
          <span class="usuario">
             <i class="bi bi-person-fill"></i>
-            Fabiano Teixeira Lages
+            {{ usuario }}
          </span>
       </div>
    </header>
@@ -13,9 +13,18 @@
 
 <script lang="ts">
    import { defineComponent } from "vue";
+   import { useStore } from "../store";
 
    export default defineComponent({
-      name: "CabecalhoSite"
+      name: "CabecalhoSite",
+      setup() {
+         const store = useStore();
+         const usuario = store.state.usuario;
+
+         return({
+            usuario
+         });
+      }
       
    });
 </script>
