@@ -14,6 +14,7 @@
             v-if="lista" 
             :lista="lista" 
             :registroSelecionado="registro"
+            @editarItem="editarItem"
             @selecionado="selecionaRegistro" 
          />
          <FormularioGenerico

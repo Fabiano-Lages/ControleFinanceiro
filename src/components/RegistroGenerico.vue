@@ -5,6 +5,7 @@
          :key="corretora.id" 
          :id="`cor-${corretora.id}`"
          @click="selecionaRegistro(corretora.id)"
+         @dblclick="editarItem"
          :class="(registroSelecionado.id == corretora.id) ? 'selecionado' : ''"
       >{{ corretora.nome }}</p>
    </div>
@@ -34,8 +35,14 @@
             }
          };
 
+         const editarItem = () => {
+            window.getSelection()?.removeAllRanges();
+            emit('editarItem', props.registroSelecionado);
+         };
+
          return {
-            selecionaRegistro
+            selecionaRegistro,
+            editarItem
          };
       }
    });
