@@ -5,7 +5,7 @@
       <div class="controle">
          <span class="usuario">
             <i class="bi bi-person-fill"></i>
-            {{ usuario }}
+            {{ usuario.nome }}
          </span>
       </div>
    </header>

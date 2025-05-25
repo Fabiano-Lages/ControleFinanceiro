@@ -1,4 +1,4 @@
-<template lang="">
+<template>
    <div class="principal">
       <header>
          <h2>Dashboard</h2>

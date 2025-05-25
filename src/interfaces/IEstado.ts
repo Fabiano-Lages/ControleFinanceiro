@@ -1,3 +1,7 @@
+import { IUsuario } from './IUsuario.ts';
+import { IEstadoCorretora } from '../store/modulos/corretora/index.ts';
+
 export interface IEstado {
-   usuario: string,
+   usuario: IUsuario,
+   corretora: IEstadoCorretora
 }

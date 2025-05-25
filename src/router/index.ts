@@ -8,6 +8,11 @@ const roteador = createRouter({
             path: "/",
             name: "DashBoard",
             component: DashBoard
+        },
+        {
+            path: "/corretora",
+            name: "Corretora",
+            component: () => import("../views/ListaCorretoras.vue")
         }
     ]
 });

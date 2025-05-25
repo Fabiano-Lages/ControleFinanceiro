@@ -1,14 +1,14 @@
 <template>
    <aside class="sidebar">
       <ul>
-         <li>Dashboard</li>
+         <li class="nav-item"><router-link class="nav-link" aria-current="page" to="/">DashBoard</router-link></li>
          <li>Listas</li>
             <ul>
-               <li>Corretora</li>
-               <li>Investimento</li>
-               <li>Tipo de Investimento</li>
+               <li class="nav-item"><router-link class="nav-link" aria-current="page" to="Corretora">Corretora</router-link></li>
+               <li class="nav-item"><router-link class="nav-link" aria-current="page" to="Investimento">Investimento</router-link></li>
+               <li class="nav-item"><router-link class="nav-link" aria-current="page" to="TipoInvestimento">Tipo de Investimento</router-link></li>
             </ul>
-         <li>Investimentos</li>
+         <li class="nav-item"><router-link class="nav-link" aria-current="page" to="Investiomentos">Investiomentos</router-link></li>
       </ul>
    </aside>
 </template>

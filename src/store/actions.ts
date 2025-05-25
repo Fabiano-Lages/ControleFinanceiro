@@ -1,0 +1,6 @@
+export const acaoCorretora = {
+   LISTA: "LISTAR_CORRETORA",
+   EXCLUI : 'EXCLUIR_CORRETORA',
+   ALTERA : 'ALTERAR_CORRETORA',  
+   ADICIONA : 'ADICIONAR_CORRETORA'
+};

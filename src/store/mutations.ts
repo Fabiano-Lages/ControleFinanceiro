@@ -1,0 +1,6 @@
+export const mutacaoCorretora = {
+   LISTA: "LISTA_CORRETORA",
+   EXCLUI : 'EXCLUI_CORRETORA',
+   ALTERA : 'ALTERA_CORRETORA',  
+   ADICIONA : 'ADICIONA_CORRETORA'
+};
