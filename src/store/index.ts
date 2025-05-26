@@ -3,6 +3,8 @@ import type { InjectionKey } from "vue";
 import { banco } from "../services/banco.ts";
 import { IEstado } from "../interfaces/IEstado.ts";
 import { IEstadoCorretora, corretora } from "./modulos/corretora/index.ts";
+import { IEstadoTipoInvestimento, tipoInvestimento } from "./modulos/tipoinvestimento/index.ts";
+import { IEstadoPapel, papel } from "./modulos/papel/index.ts";
 
 export const key: InjectionKey<Store<IEstado>> = Symbol();
 
@@ -12,7 +14,9 @@ export const store = createStore<IEstado>({
          id: 1,
          nome: "Fabiano Teixeira Lages"
       },
-      corretora: {} as IEstadoCorretora
+      corretora: {} as IEstadoCorretora,
+      tipoInvestimento: {} as IEstadoTipoInvestimento,
+      papel: {} as IEstadoPapel
    },
    mutations: {
       
@@ -21,7 +25,9 @@ export const store = createStore<IEstado>({
       
    },
    modules: {
-      corretora
+      corretora,
+      tipoInvestimento,
+      papel
    }
 });
 

@@ -1,13 +1,13 @@
 <template>
    <div class="listagem">
       <p 
-         v-for="corretora in lista" 
-         :key="corretora.id" 
-         :id="`cor-${corretora.id}`"
-         @click="selecionaRegistro(corretora.id)"
+         v-for="generico in lista" 
+         :key="generico.id" 
+         :id="`cor-${generico.id}`"
+         @click="selecionaRegistro(generico.id)"
          @dblclick="editarItem"
-         :class="(registroSelecionado.id == corretora.id) ? 'selecionado' : ''"
-      >{{ corretora.nome }}</p>
+         :class="(registroSelecionado.id == generico.id) ? 'selecionado' : ''"
+      >{{ generico.nome }}</p>
    </div>
 </template>
 

@@ -11,7 +11,7 @@ export const estrutura = [
    },
    { 
       tabela: 'papel', 
-      campos: ["nome"],
+      campos: ["nome", "idTipoInvestimento"],
       indices: ["nome"]
    },
    { 

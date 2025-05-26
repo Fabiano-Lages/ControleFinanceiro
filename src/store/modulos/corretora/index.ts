@@ -10,6 +10,8 @@ export interface IEstadoCorretora {
    corretoras: IGenerico[]
 }
 
+const tabela = "corretora";
+
 export const corretora: Module<IEstadoCorretora, IEstado> = {
    mutations: {
       [mutacaoCorretora.LISTA](state, lista: IGenerico[]) {
@@ -37,7 +39,7 @@ export const corretora: Module<IEstadoCorretora, IEstado> = {
       [acaoCorretora.LISTA](context) {
          return(
             banco
-               .listaRegistros("corretora")
+               .listaRegistros(tabela)
                .then((lista) => {
                   context.commit(mutacaoCorretora.LISTA, lista);
                })
@@ -46,7 +48,7 @@ export const corretora: Module<IEstadoCorretora, IEstado> = {
       [acaoCorretora.ADICIONA](context, corretora: IGenerico) {
          return(
             banco
-               .addData("corretora", JSON.parse(JSON.stringify(corretora)))
+               .addData(tabela, JSON.parse(JSON.stringify(corretora)))
                .then((id) => {
                   corretora.id = id;
                   context.commit(mutacaoCorretora.ADICIONA, corretora);
@@ -59,7 +61,7 @@ export const corretora: Module<IEstadoCorretora, IEstado> = {
       [acaoCorretora.ALTERA](context, corretora: IGenerico) {
          return(
             banco
-               .updateData("corretora", corretora.id, corretora)
+               .updateData(tabela, corretora.id, corretora)
                .then(() => {
                   context.commit(mutacaoCorretora.ALTERA, corretora);
                })
@@ -71,12 +73,23 @@ export const corretora: Module<IEstadoCorretora, IEstado> = {
       [acaoCorretora.EXCLUI](context, id: number) {
          return(
             banco
-               .deleteData("corretora", id)
-               .then(() => {
-                  context.commit(mutacaoCorretora.EXCLUI, id);
+               .findData("investimento", "idCorretora", id.toString())
+               .then((existe : boolean) => {
+                  if (!existe) {
+                     banco
+                        .deleteData(tabela, id)
+                        .then(() => {
+                           context.commit(mutacaoCorretora.EXCLUI, id);
+                        })
+                        .catch((error) => {
+                           console.error("Erro ao excluir corretora: ", error);
+                        });
+                  } else {
+                     console.error("Erro ao excluir tipo de investimento: Tipo de investimento está vinculado a um papel.");
+                  }
                })
                .catch((error) => {
-                  console.error("Erro ao excluir corretora: ", error);
+                  console.error("Erro ao verificar vinculo de corretora: ", error);
                })
          );
       }

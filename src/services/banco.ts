@@ -72,6 +72,27 @@ export const banco = {
          })
       );
    },
+   findData: function(tabela : string, campo : string, valor : string) : Promise<boolean> {
+      return(
+         new Promise((resolve, reject) => {
+            if(this.db) {
+               const transaction = this.db.transaction(tabela, 'readonly');
+               const objectStore = transaction.objectStore(tabela);
+               const request = objectStore.get(campo + " = " + valor);
+               
+               request.onsuccess = function(event) {
+                  resolve((event.target as IDBRequest).result.length > 0);
+               };
+            
+               request.onerror = function(event) {
+                  reject('Erro recuperando registro: ' + (event.target as IDBRequest).error?.name);
+               };
+            } else {
+               reject('Banco não inicializado');
+            }
+         })
+      );
+   },
    updateData: function(tabela : string, id : number, updatedData : object) : Promise<boolean> {
       return(
          new Promise((resolve, reject) => {

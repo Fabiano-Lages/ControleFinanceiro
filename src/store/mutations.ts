@@ -4,3 +4,17 @@ export const mutacaoCorretora = {
    ALTERA : 'ALTERA_CORRETORA',  
    ADICIONA : 'ADICIONA_CORRETORA'
 };
+
+export const mutacaoTipoInvestimento = {
+   LISTA: "LISTA_TIPOINVESTIMENTO",
+   EXCLUI : 'EXCLUI_TIPOINVESTIMENTO',
+   ALTERA : 'ALTERA_TIPOINVESTIMENTO',  
+   ADICIONA : 'ADICIONA_TIPOINVESTIMENTO'
+};
+
+export const mutacaoPapel = {
+   LISTA: "LISTA_PAPEL",
+   EXCLUI : 'EXCLUI_PAPEL',
+   ALTERA : 'ALTERA_PAPEL',  
+   ADICIONA : 'ADICIONA_PAPEL'
+};

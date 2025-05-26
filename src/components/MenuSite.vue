@@ -5,7 +5,7 @@
          <li>Listas</li>
             <ul>
                <li class="nav-item"><router-link class="nav-link" aria-current="page" to="Corretora">Corretora</router-link></li>
-               <li class="nav-item"><router-link class="nav-link" aria-current="page" to="Investimento">Investimento</router-link></li>
+               <li class="nav-item"><router-link class="nav-link" aria-current="page" to="Papel">Papel</router-link></li>
                <li class="nav-item"><router-link class="nav-link" aria-current="page" to="TipoInvestimento">Tipo de Investimento</router-link></li>
             </ul>
          <li class="nav-item"><router-link class="nav-link" aria-current="page" to="Investiomentos">Investiomentos</router-link></li>

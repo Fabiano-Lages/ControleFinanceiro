@@ -13,7 +13,17 @@ const roteador = createRouter({
             path: "/corretora",
             name: "Corretora",
             component: () => import("../views/ListaCorretoras.vue")
-        }
+        },
+        {
+            path: "/tipoinvestimento",
+            name: "TipoInvestimento",
+            component: () => import("../views/ListaTipoInvestimento.vue")
+        },
+        {
+            path: "/papel",
+            name: "Papel",
+            component: () => import("../views/ListaPapel.vue")
+        },
     ]
 });
 
