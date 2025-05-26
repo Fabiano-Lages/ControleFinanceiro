@@ -1,6 +1,6 @@
 import { IGenerico } from "./IGenerico.ts";
 
 export interface IUsuario extends IGenerico {
-   emall: string;
+   email: string;
    senha: string;
 }

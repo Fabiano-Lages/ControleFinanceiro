@@ -6,27 +6,35 @@ export const banco = {
    iniciaBanco: function() : Promise<void> {
       return(
          new Promise((resolve, reject) => {
-            const request = indexedDB.open(this.nomeBanco, 1);
-            request.onupgradeneeded = function(event) {
-               banco.criaBanco(event.target as IDBOpenDBRequest)
-                  .then(() => {
-                     console.log('Banco criado com sucesso');
-                  })
-                  .catch((error) => {
-                     console.error('Erro ao criar o banco: ', error);
-                  });
-            };
-      
-            request.onsuccess = function(event) {
-               if (event.target) {
-                  banco.db = (event.target as IDBOpenDBRequest).result;
+            navigator.storage.persist().then((isPersisted) => {
+               if (isPersisted) {
+                  console.log("Armazenamento persistente garantido.");
+               } else {
+                  console.warn("Armazenamento persistente não garantido.");
                }
-               resolve();
-            };
+
+               const request = indexedDB.open(this.nomeBanco, 1);
+               request.onupgradeneeded = function(event) {
+                  banco.criaBanco(event.target as IDBOpenDBRequest)
+                     .then(() => {
+                        console.log('Banco criado com sucesso');
+                     })
+                     .catch((error) => {
+                        console.error('Erro ao criar o banco: ', error);
+                     });
+               };
          
-            request.onerror = function(event) {
-               reject('Erro de banco: ' + (event.target as IDBRequest).error?.name);
-            };
+               request.onsuccess = function(event) {
+                  if (event.target) {
+                     banco.db = (event.target as IDBOpenDBRequest).result;
+                  }
+                  resolve();
+               };
+            
+               request.onerror = function(event) {
+                  reject('Erro de banco: ' + (event.target as IDBRequest).error?.name);
+               };
+            });
          })
       );
    },
