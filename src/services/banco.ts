@@ -72,18 +72,41 @@ export const banco = {
          })
       );
    },
-   findData: function(tabela : string, campo : string, valor : string) : Promise<boolean> {
-      return(
+   findData: function(tabela: string, campo: string, valor: string): Promise<boolean> {
+      return (
          new Promise((resolve, reject) => {
-            if(this.db) {
+            if (this.db) {
                const transaction = this.db.transaction(tabela, 'readonly');
                const objectStore = transaction.objectStore(tabela);
-               const request = objectStore.get(campo + " = " + valor);
-               
+
+               let request: IDBRequest;
+               try {
+                  const index = objectStore.index(campo);
+                  request = index.getAll(valor);
+               } catch {
+                  request = objectStore.openCursor();
+                  const results = [];
+                  request.onsuccess = function(event) {
+                     const cursor = (event.target as IDBRequest).result;
+                     if (cursor) {
+                        if (cursor.value && cursor.value[campo] == valor) {
+                           results.push(cursor.value);
+                        }
+                        cursor.continue();
+                     } else {
+                        resolve(results.length > 0);
+                     }
+                  };
+                  request.onerror = function(event) {
+                     reject('Erro recuperando registro: ' + (event.target as IDBRequest).error?.name);
+                  };
+               }
+
                request.onsuccess = function(event) {
-                  resolve((event.target as IDBRequest).result.length > 0);
+                  const result = (event.target as IDBRequest).result;
+                  resolve(Array.isArray(result) ? result.length > 0 : !!result);
                };
-            
+
                request.onerror = function(event) {
                   reject('Erro recuperando registro: ' + (event.target as IDBRequest).error?.name);
                };
@@ -93,7 +116,7 @@ export const banco = {
          })
       );
    },
-   updateData: function(tabela : string, id : number, updatedData : object) : Promise<boolean> {
+   updateData: function(tabela: string, id: number, updatedData: object) : Promise<boolean> {
       return(
          new Promise((resolve, reject) => {
             if(this.db) {

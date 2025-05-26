@@ -1,4 +1,6 @@
-export interface IUsuario {
-   id: number,
-   nome: string,
+import { IGenerico } from "./IGenerico.ts";
+
+export interface IUsuario extends IGenerico {
+   emall: string;
+   senha: string;
 }

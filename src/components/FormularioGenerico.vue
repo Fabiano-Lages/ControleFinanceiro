@@ -4,7 +4,7 @@
          <input type="hidden" id="id" v-model="regTrab.id" />
          <div>
             <label for="nome">Nome:</label>
-            <input type="text" id="nome" class="form-control" v-model="regTrab.nome" />
+            <input type="text" id="nome" class="form-control" v-model="regTrab.nome" required />
          </div>
          <p>
             <button class="btn btn-primary" type="submit">Salvar</button>

@@ -4,11 +4,16 @@
          <input type="hidden" id="id" v-model="regTrab.id" />
          <div>
             <label for="nome">Nome:</label>
-            <input type="text" id="nome" class="form-control" v-model="regTrab.nome" />
+            <input type="text" id="nome" class="form-control" v-model="regTrab.nome" required />
          </div>
          <div>
             <label for="tipo">Tipo de investimento:</label>
-            <select id="tipo" class="form-control" v-model="regTrab.tipoInvestimento" />
+            <select id="tipo" class="form-control" v-model="regTrab.idTipoInvestimento" required>
+               <option value="">Selecione um tipo</option>
+               <option v-for="tipo in listaTipos" :key="tipo.id" :value="tipo.id">
+                  {{ tipo.nome }}
+               </option>
+            </select>
          </div>
          <p>
             <button class="btn btn-primary" type="submit">Salvar</button>
@@ -19,8 +24,10 @@
 </template>
 
 <script lang="ts">
-   import { defineComponent, PropType, ref } from "vue";
+   import { defineComponent, computed, PropType, ref, onMounted } from "vue";
    import { IPapel } from "../interfaces/IPapel";
+   import { useStore } from "../store";
+   import { acaoTipoInvestimnento } from "../store/actions";
 
    export default defineComponent({
       name: "FormularioPapel",
@@ -31,8 +38,27 @@
          }
       },
       setup(props, {emit}) {
+         const store = useStore();
+         const listaTipos = computed(() => store.state.tipoInvestimento.tipoInvestimentos);
          const regTrab = ref({} as IPapel);
          Object.assign(regTrab.value, props.registro);
+
+         
+         if(!listaTipos.value || listaTipos.value.length === 0) {
+            const loadTipoInvestimento = async () => {
+               try {
+                  await store.dispatch(acaoTipoInvestimnento.LISTA);
+               } catch (error) {
+                  console.error("Erro ao carregar os clientes:", error);
+               }
+            };
+            
+            onMounted(() => {
+               if(!listaTipos.value || !listaTipos.value.length) {
+                  loadTipoInvestimento();
+               }
+            });
+         }
 
          const salvarRegistro = () => {
             emit('salvarRegistro', regTrab.value);
@@ -45,7 +71,8 @@
          return {
             regTrab,
             salvarRegistro,
-            limpaSelecao
+            limpaSelecao,
+            listaTipos
          };
       }
    });

@@ -61,7 +61,7 @@ export const papel: Module<IEstadoPapel, IEstado> = {
       [acaoPapel.ALTERA](context, papel: IPapel) {
          return(
             banco
-               .updateData(tabela, papel.id, papel)
+               .updateData(tabela, papel.id, JSON.parse(JSON.stringify(papel)))
                .then(() => {
                   context.commit(mutacaoPapel.ALTERA, papel);
                })
