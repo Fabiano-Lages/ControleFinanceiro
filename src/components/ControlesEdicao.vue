@@ -43,7 +43,7 @@
 <style scoped>
    .controle {
       width: 15%;
-      min-width: 150px;
+      min-width: 250px;
       text-align: end;
       margin-left: 20px;
    }

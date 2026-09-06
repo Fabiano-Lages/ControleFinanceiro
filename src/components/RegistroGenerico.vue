@@ -55,7 +55,7 @@
       margin-left: 20px;
       background: #444;
       padding: 10px 20px;
-      height: 400px;
+      min-height: 300px;
       border-radius: 5px;
       overflow-y: auto;
    }
