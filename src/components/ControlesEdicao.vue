@@ -8,7 +8,7 @@
 
 <script lang="ts">
    import { defineComponent, PropType } from "vue";
-   import { IGenerico } from "../interfaces/IGenerico";
+   import { IGenerico } from "../interfaces/IGenerico.ts";
 
    export default defineComponent({
       name: "ControlesEdicao",

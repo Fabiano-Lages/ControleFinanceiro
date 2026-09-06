@@ -10,7 +10,7 @@
             <label for="tipo">Tipo de investimento:</label>
             <select id="tipo" class="form-control" v-model="regTrab.idTipoInvestimento" required>
                <option value="">Selecione um tipo</option>
-               <option v-for="tipo in listaTipos" :key="tipo.id" :value="tipo.id">
+               <option v-for="tipo in listaTipo" :key="tipo.id" :value="tipo.id">
                   {{ tipo.nome }}
                </option>
             </select>
@@ -24,10 +24,9 @@
 </template>
 
 <script lang="ts">
-   import { defineComponent, computed, PropType, ref, onMounted } from "vue";
-   import { IPapel } from "../interfaces/IPapel";
-   import { useStore } from "../store";
-   import { acaoTipoInvestimnento } from "../store/actions";
+   import { defineComponent, PropType, ref, onMounted, onBeforeUnmount } from "vue";
+   import { IPapel } from "../interfaces/IPapel.ts";
+   import { IGenerico } from "../interfaces/IGenerico.ts";
 
    export default defineComponent({
       name: "FormularioPapel",
@@ -35,30 +34,15 @@
          registro: {
             type: Object as PropType<IPapel>,
             required: true
+         },
+         listaTipo: {
+            type: Array as PropType<IGenerico[]>,
+            required: true
          }
       },
       setup(props, {emit}) {
-         const store = useStore();
-         const listaTipos = computed(() => store.state.tipoInvestimento.tipoInvestimentos);
          const regTrab = ref({} as IPapel);
          Object.assign(regTrab.value, props.registro);
-
-         
-         if(!listaTipos.value || listaTipos.value.length === 0) {
-            const loadTipoInvestimento = async () => {
-               try {
-                  await store.dispatch(acaoTipoInvestimnento.LISTA);
-               } catch (error) {
-                  console.error("Erro ao carregar os clientes:", error);
-               }
-            };
-            
-            onMounted(() => {
-               if(!listaTipos.value || !listaTipos.value.length) {
-                  loadTipoInvestimento();
-               }
-            });
-         }
 
          const salvarRegistro = () => {
             emit('salvarRegistro', regTrab.value);
@@ -67,12 +51,26 @@
          const limpaSelecao = () => {
             emit('limpaSelecao');
          };
+         
+         const onKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Enter") {
+               event.preventDefault();
+               salvarRegistro();
+            }
+         };
+
+         onMounted(() => {
+            window.addEventListener("keydown", onKeyDown);
+         });
+
+         onBeforeUnmount(() => {
+            window.removeEventListener("keydown", onKeyDown);
+         });
 
          return {
             regTrab,
             salvarRegistro,
-            limpaSelecao,
-            listaTipos
+            limpaSelecao
          };
       }
    });

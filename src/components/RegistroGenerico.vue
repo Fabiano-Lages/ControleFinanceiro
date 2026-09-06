@@ -13,7 +13,7 @@
 
 <script lang="ts">
    import {defineComponent, PropType} from "vue";
-   import { IGenerico } from "../interfaces/IGenerico";
+   import { IGenerico } from "../interfaces/IGenerico.ts";
 
    export default defineComponent({
       name: "RegistroGenerico",
@@ -27,6 +27,7 @@
             required: true
          }
       },
+      emits: ['selecionado', 'editarItem', 'criarItem'],
       setup(props, {emit}) {
          const selecionaRegistro = (id: number) => {
             const item = props.lista.find((item) => item.id === id) || {} as IGenerico;
@@ -40,9 +41,14 @@
             emit('editarItem', props.registroSelecionado);
          };
 
+         const criarItem = () => {
+            emit('criarItem');
+         };
+
          return {
             selecionaRegistro,
-            editarItem
+            editarItem,
+            criarItem
          };
       }
    });

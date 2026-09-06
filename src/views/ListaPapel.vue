@@ -1,55 +1,26 @@
 <template>
-   <div class="principal">
-      <header>
-         <TituloListas valor="Papel" />
-         <ControlesEdicao
-            :registro="registro"
-            @criarItem="criarItem"
-            @editarItem="editarItem"
-            @removeRegistro="removeRegistro"
-         />
-      </header>
-      <div class="trabalho">
-         <RegistroGenerico
-            v-if="lista"
-            :lista="listaGenerico"
-            :registroSelecionado="registro"
-            @editarItem="editarItem"
-            @selecionado="selecionaRegistro"
-         />
-         <FormularioPapel
-            v-if="edita || novo"
-            :registro="registro"
-            @salvarRegistro="salvarRegistro"
-            @limpaSelecao="limpaSelecao"
-         />
-      </div>
-   </div>
+   <ListagemPapeis
+      :lista="lista"
+      @removeRegistro="removeRegistro"
+   />
 </template>
 
 <script lang="ts">
    import { computed, defineComponent, onMounted, ref } from "vue";
-   import { useStore } from "../store";
-   import { acaoPapel } from "../store/actions";
+   import { useStore } from "../store/index.ts";
+   import { acaoPapel, acaoTipoInvestimnento } from "../store/actions.ts";
    import { IPapel } from "../interfaces/IPapel.ts";
-   import { IGenerico } from "../interfaces/IGenerico";
-   import RegistroGenerico from "../components/RegistroGenerico.vue";
-   import ControlesEdicao from "../components/ControlesEdicao.vue";
-   import FormularioPapel from "../components/FormularioPapel.vue";
-   import TituloListas from "../components/TituloListas.vue";
+   import ListagemPapeis from "../components/ListagemPapeis.vue";
 
    export default defineComponent({
       name: "ListaTipoInvestimento",
       components: {
-         RegistroGenerico,
-         ControlesEdicao,
-         FormularioPapel,
-         TituloListas
+         ListagemPapeis
       },
       setup() {
          const store = useStore();
          const lista = computed(() => store.state.papel.papeis);
-         const listaGenerico = computed(() => store.state.papel.papeis.map((item) => item as IGenerico));
+         const listaTP = computed(() => store.state.tipoInvestimento.tipoInvestimentos);
          const registro = ref({} as IPapel);
          const novo = ref(false);
          const edita = ref(false);
@@ -64,34 +35,20 @@
             };
 
             onMounted(() => {
+               if(!listaTP.value || listaTP.value.length === 0) {
+                  store.dispatch(acaoTipoInvestimnento.LISTA);
+               }
+
                if(!lista.value || !lista.value.length) {
                   loadPapel();
                }
             });
          }
 
-         const selecionaRegistro = (item: IPapel) => {
-            limpaSelecao();
-            if(item) {
-               Object.assign(registro.value, item);
-            }
-         };
-
          const limpaSelecao = () => {
             registro.value = {} as IPapel;
             novo.value = false;
             edita.value = false;
-         };
-
-         const criarItem = () => {
-            limpaSelecao();
-            novo.value = true;
-         };
-
-         const editarItem = () => {
-            if (registro.value.id) {
-               edita.value = true;
-            }
          };
 
          const salvarRegistro = (regTrab: IPapel) => {
@@ -112,16 +69,8 @@
 
          return({
             lista,
-            listaGenerico,
-            selecionaRegistro,
-            limpaSelecao,
-            criarItem,
-            editarItem,
             salvarRegistro,
-            removeRegistro,
-            registro,
-            novo,
-            edita
+            removeRegistro
          });
       }
    });

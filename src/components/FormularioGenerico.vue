@@ -4,7 +4,7 @@
          <input type="hidden" id="id" v-model="regTrab.id" />
          <div>
             <label for="nome">Nome:</label>
-            <input type="text" id="nome" class="form-control" v-model="regTrab.nome" required />
+            <input ref="nomeInput" type="text" id="nome" class="form-control" v-model="regTrab.nome" required />
          </div>
          <p>
             <button class="btn btn-primary" type="submit">Salvar</button>
@@ -15,8 +15,8 @@
 </template>
 
 <script lang="ts">
-   import { defineComponent, PropType, ref } from "vue";
-   import { IGenerico } from "../interfaces/IGenerico";
+   import { defineComponent, nextTick, onMounted, onBeforeUnmount,PropType, ref } from "vue";
+   import { IGenerico } from "../interfaces/IGenerico.ts";
 
    export default defineComponent({
       name: "FormularioGenerico",
@@ -26,20 +26,51 @@
             required: true
          }
       },
+      emits: ['salvarRegistro', 'fechaFormulario'],
       setup(props, {emit}) {
          const regTrab = ref({} as IGenerico);
+         const nomeInput = ref<HTMLInputElement | null>(null);
+
          Object.assign(regTrab.value, props.registro);
 
+         onMounted(async () => {
+            await nextTick();
+            nomeInput.value?.focus();
+         });
+
          const salvarRegistro = () => {
-            emit('salvarRegistro', regTrab.value);
+            if(!regTrab.value.nome || regTrab.value.nome.trim() === "") {
+               alert("O campo nome é obrigatório.");
+            } else {
+               emit('salvarRegistro', regTrab.value);
+            }
          };
 
          const limpaSelecao = () => {
-            emit('limpaSelecao');
+            emit('fechaFormulario');
          };
+         
+         const onKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Enter") {
+               event.preventDefault();
+               salvarRegistro();
+            } else if (event.key === "Escape") {
+               event.preventDefault();
+               limpaSelecao();
+            }
+         };
+
+         onMounted(() => {
+            window.addEventListener("keydown", onKeyDown);
+         });
+
+         onBeforeUnmount(() => {
+            window.removeEventListener("keydown", onKeyDown);
+         });
 
          return {
             regTrab,
+            nomeInput,
             salvarRegistro,
             limpaSelecao
          };

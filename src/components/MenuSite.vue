@@ -39,6 +39,7 @@
 
    li {
       color: lightgray;
+      cursor: default;
    }
 
    li>a {
