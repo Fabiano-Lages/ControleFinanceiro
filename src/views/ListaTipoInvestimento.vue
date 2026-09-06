@@ -1,24 +1,24 @@
 <template>
    <div class="principal">
       <header>
-         <h2>Tipo de Investimento</h2>
-         <ControlesEdicao 
-            :registro="registro" 
-            @criarItem="criarItem" 
-            @editarItem="editarItem" 
+         <TituloListas valor="Tipo de Investimento" />
+         <ControlesEdicao
+            :registro="registro"
+            @criarItem="criarItem"
+            @editarItem="editarItem"
             @removeRegistro="removeRegistro"
          />
       </header>
       <div class="trabalho">
-         <RegistroGenerico 
-            v-if="lista" 
-            :lista="lista" 
+         <RegistroGenerico
+            v-if="lista"
+            :lista="lista"
             :registroSelecionado="registro"
             @editarItem="editarItem"
-            @selecionado="selecionaRegistro" 
+            @selecionado="selecionaRegistro"
          />
          <FormularioGenerico
-            v-if="edita || novo" 
+            v-if="edita || novo"
             :registro="registro"
             @salvarRegistro="salvarRegistro"
             @limpaSelecao="limpaSelecao"
@@ -35,13 +35,15 @@
    import RegistroGenerico from "../components/RegistroGenerico.vue";
    import ControlesEdicao from "../components/ControlesEdicao.vue";
    import FormularioGenerico from "../components/FormularioGenerico.vue";
+   import TituloListas from "../components/TituloListas.vue";
 
    export default defineComponent({
       name: "ListaTipoInvestimento",
       components: {
          RegistroGenerico,
          ControlesEdicao,
-         FormularioGenerico
+         FormularioGenerico,
+         TituloListas
       },
       setup() {
          const store = useStore();
@@ -49,7 +51,7 @@
          const registro = ref({} as IGenerico);
          const novo = ref(false);
          const edita = ref(false);
-         
+
          if(!lista.value || lista.value.length === 0) {
             const loadTipoInvestimento = async () => {
                try {
@@ -58,7 +60,7 @@
                   console.error("Erro ao carregar os clientes:", error);
                }
             };
-            
+
             onMounted(() => {
                if(!lista.value || !lista.value.length) {
                   loadTipoInvestimento();
@@ -69,7 +71,7 @@
          const selecionaRegistro = (item: IGenerico) => {
             limpaSelecao();
             if(item) {
-               Object.assign(registro.value, item); 
+               Object.assign(registro.value, item);
             }
          };
 

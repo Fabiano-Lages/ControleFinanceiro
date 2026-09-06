@@ -25,13 +25,14 @@
             usuario
          });
       }
-      
+
    });
 </script>
 
 <style scoped>
    header {
       height: 5%;
+      min-height: 50px;
       background-color: #242424;
       color: white;
       display: flex;
@@ -52,6 +53,7 @@
       font-size: 12pt;
       margin-top: 15px;
       width: 10%;
+      min-width: 230px;
       text-align: center;
    }
 

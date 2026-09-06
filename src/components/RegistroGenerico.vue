@@ -1,8 +1,8 @@
 <template>
    <div class="listagem">
-      <p 
-         v-for="generico in lista" 
-         :key="generico.id" 
+      <p
+         v-for="generico in lista"
+         :key="generico.id"
          :id="`cor-${generico.id}`"
          @click="selecionaRegistro(generico.id)"
          @dblclick="editarItem"
@@ -51,10 +51,10 @@
 <style scoped>
    .listagem {
       width: 15%;
+      min-width: 250px;
       margin-left: 20px;
       background: #444;
       padding: 10px 20px;
-      min-width: 150px;
       height: 400px;
       border-radius: 5px;
       overflow-y: auto;
@@ -65,7 +65,7 @@
       font-size: 1.2em;
       margin: 0;
       cursor: pointer;
-      padding: 0 15px; 
+      padding: 0 15px;
    }
 
    .listagem p.selecionado {
@@ -75,5 +75,11 @@
 
    .listagem p:hover {
       background-color: #666;
+   }
+
+   @media screen and (max-width: 1024px) {
+      .listagem p {
+         font-size: .9em;
+      }
    }
 </style>
