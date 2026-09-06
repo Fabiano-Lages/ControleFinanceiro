@@ -16,6 +16,7 @@ export const corretora: Module<IEstadoCorretora, IEstado> = {
    mutations: {
       [mutacaoCorretora.LISTA](state, lista: IGenerico[]) {
          state.corretoras = lista;
+         ordenaLista(state.corretoras);
       },
       [mutacaoCorretora.ADICIONA](state, corretora: IGenerico) {
          state.corretoras.push(corretora);
