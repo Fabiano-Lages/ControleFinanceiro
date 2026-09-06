@@ -36,4 +36,28 @@
       padding: 0;
       margin: 0 0 0 20px;
    }
+
+   li {
+      color: lightgray;
+   }
+
+   li>a {
+      color: white;
+      text-wrap: nowrap;
+   }
+
+   li>a:hover {
+      color: yellow;
+   }
+
+   @media screen and (max-width: 1024px) {
+      aside {
+         padding-top: 20px;
+         padding-right: 20px;
+      }
+
+      li {
+         font-size: 12px;
+      }
+   }
 </style>
