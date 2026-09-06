@@ -1,24 +1,24 @@
 <template>
    <div class="principal">
       <header>
-         <h2>Papel</h2>
-         <ControlesEdicao 
-            :registro="registro" 
-            @criarItem="criarItem" 
-            @editarItem="editarItem" 
+         <TituloListas valor="Papel" />
+         <ControlesEdicao
+            :registro="registro"
+            @criarItem="criarItem"
+            @editarItem="editarItem"
             @removeRegistro="removeRegistro"
          />
       </header>
       <div class="trabalho">
-         <RegistroGenerico 
-            v-if="lista" 
-            :lista="listaGenerico" 
+         <RegistroGenerico
+            v-if="lista"
+            :lista="listaGenerico"
             :registroSelecionado="registro"
             @editarItem="editarItem"
-            @selecionado="selecionaRegistro" 
+            @selecionado="selecionaRegistro"
          />
          <FormularioPapel
-            v-if="edita || novo" 
+            v-if="edita || novo"
             :registro="registro"
             @salvarRegistro="salvarRegistro"
             @limpaSelecao="limpaSelecao"
@@ -36,13 +36,15 @@
    import RegistroGenerico from "../components/RegistroGenerico.vue";
    import ControlesEdicao from "../components/ControlesEdicao.vue";
    import FormularioPapel from "../components/FormularioPapel.vue";
+   import TituloListas from "../components/TituloListas.vue";
 
    export default defineComponent({
       name: "ListaTipoInvestimento",
       components: {
          RegistroGenerico,
          ControlesEdicao,
-         FormularioPapel
+         FormularioPapel,
+         TituloListas
       },
       setup() {
          const store = useStore();
@@ -51,7 +53,7 @@
          const registro = ref({} as IPapel);
          const novo = ref(false);
          const edita = ref(false);
-         
+
          if(!lista.value || lista.value.length === 0) {
             const loadPapel = async () => {
                try {
@@ -60,7 +62,7 @@
                   console.error("Erro ao carregar os clientes:", error);
                }
             };
-            
+
             onMounted(() => {
                if(!lista.value || !lista.value.length) {
                   loadPapel();
@@ -71,7 +73,7 @@
          const selecionaRegistro = (item: IPapel) => {
             limpaSelecao();
             if(item) {
-               Object.assign(registro.value, item); 
+               Object.assign(registro.value, item);
             }
          };
 
