@@ -52,6 +52,7 @@
             required: true
          }
       },
+      emits: ["removeRegistro", "salvarRegistro"],
       setup(props,{emit}) {
          const store = useStore();
          const listaTipo = computed(() => store.state.tipoInvestimento.tipoInvestimentos);
@@ -94,8 +95,7 @@
 
          const salvarRegistro = (regTrab: IPapel) => {
             emit('salvarRegistro', regTrab);
-            novo.value = false;
-            edita.value = false;
+            fechaFormulario();
          };
 
          const onKeyDown = (event: KeyboardEvent) => {
@@ -152,19 +152,4 @@
 </script>
 
 <style scoped>
-   .principal {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 2em;
-   }
-
-   .trabalho {
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 50px;
-      margin-top: 5px;
-   }
 </style>

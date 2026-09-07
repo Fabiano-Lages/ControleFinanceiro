@@ -1,6 +1,7 @@
 <template>
    <ListagemGenerica 
       :lista="lista" 
+      v-if="lista"
       nomeLista="Corretora" 
       @removeRegistro="removeRegistro"
       @salvarRegistro="salvarRegistro"

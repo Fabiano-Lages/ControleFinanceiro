@@ -1,7 +1,9 @@
 <template>
    <ListagemPapeis
       :lista="lista"
+      v-if="lista"
       @removeRegistro="removeRegistro"
+      @salvarRegistro="salvarRegistro"
    />
 </template>
 
@@ -22,8 +24,6 @@
          const lista = computed(() => store.state.papel.papeis);
          const listaTP = computed(() => store.state.tipoInvestimento.tipoInvestimentos);
          const registro = ref({} as IPapel);
-         const novo = ref(false);
-         const edita = ref(false);
 
          if(!lista.value || lista.value.length === 0) {
             const loadPapel = async () => {
@@ -45,25 +45,17 @@
             });
          }
 
-         const limpaSelecao = () => {
-            registro.value = {} as IPapel;
-            novo.value = false;
-            edita.value = false;
-         };
-
          const salvarRegistro = (regTrab: IPapel) => {
             if (regTrab.id) {
                store.dispatch(acaoPapel.ALTERA, regTrab);
             } else {
                store.dispatch(acaoPapel.ADICIONA, regTrab);
             }
-            limpaSelecao();
          };
 
          const removeRegistro = async () => {
             if(window.confirm("Deseja realmente excluir?")) {
                await store.dispatch(acaoPapel.EXCLUI, registro.value.id);
-               limpaSelecao();
             }
          };
 
@@ -77,19 +69,5 @@
 </script>
 
 <style scoped>
-   .principal {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 2em;
-   }
 
-   .trabalho {
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 50px;
-      margin-top: 5px;
-   }
 </style>

@@ -4,7 +4,7 @@
          <input type="hidden" id="id" v-model="regTrab.id" />
          <div>
             <label for="nome">Nome:</label>
-            <input type="text" id="nome" class="form-control" v-model="regTrab.nome" required />
+            <input ref="nomeInput" type="text" id="nome" class="form-control" v-model="regTrab.nome" required />
          </div>
          <div>
             <label for="tipo">Tipo de investimento:</label>
@@ -17,14 +17,14 @@
          </div>
          <p>
             <button class="btn btn-primary" type="submit">Salvar</button>
-            <button class="btn btn-secondary" type="button" @click="limpaSelecao">Cancelar</button>
+            <button class="btn btn-secondary" type="button" @click="fechaFormulario">Cancelar</button>
          </p>
       </form>
    </div>
 </template>
 
 <script lang="ts">
-   import { defineComponent, PropType, ref, onMounted, onBeforeUnmount } from "vue";
+   import { defineComponent, PropType, ref, onMounted, onBeforeUnmount, nextTick } from "vue";
    import { IPapel } from "../interfaces/IPapel.ts";
    import { IGenerico } from "../interfaces/IGenerico.ts";
 
@@ -40,22 +40,37 @@
             required: true
          }
       },
+      emits: ['salvarRegistro', 'fechaFormulario'],
       setup(props, {emit}) {
          const regTrab = ref({} as IPapel);
+         const nomeInput = ref<HTMLInputElement | null>(null);
+
          Object.assign(regTrab.value, props.registro);
 
+         onMounted(async () => {
+            await nextTick();
+            nomeInput.value?.focus();
+         });
+
          const salvarRegistro = () => {
-            emit('salvarRegistro', regTrab.value);
+            if(regTrab.value.nome && regTrab.value.idTipoInvestimento) {
+               emit('salvarRegistro', regTrab.value);
+            } else {
+               alert("Todos os campos são obrigatórios.");
+            }
          };
 
-         const limpaSelecao = () => {
-            emit('limpaSelecao');
+         const fechaFormulario = () => {
+            emit('fechaFormulario');
          };
          
          const onKeyDown = (event: KeyboardEvent) => {
             if (event.key === "Enter") {
                event.preventDefault();
                salvarRegistro();
+            } else if (event.key === "Escape") {
+               event.preventDefault();
+               fechaFormulario();
             }
          };
 
@@ -70,7 +85,8 @@
          return {
             regTrab,
             salvarRegistro,
-            limpaSelecao
+            fechaFormulario,
+            nomeInput
          };
       }
    });

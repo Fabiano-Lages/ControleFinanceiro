@@ -24,6 +24,11 @@ const roteador = createRouter({
             name: "Papel",
             component: () => import("../views/ListaPapel.vue")
         },
+        {
+            path: "/investimentos",
+            name: "Investimentos",
+            component: () => import("../views/Investimentos.vue")
+        },
     ]
 });
 

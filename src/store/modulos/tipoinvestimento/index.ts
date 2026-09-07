@@ -16,6 +16,7 @@ export const tipoInvestimento: Module<IEstadoTipoInvestimento, IEstado> = {
    mutations: {
       [mutacaoTipoInvestimento.LISTA](state, lista: IGenerico[]) {
          state.tipoInvestimentos = lista;
+         ordenaLista(state.tipoInvestimentos);
       },
       [mutacaoTipoInvestimento.ADICIONA](state, tipoInvestimento: IGenerico) {
          state.tipoInvestimentos.push(tipoInvestimento);

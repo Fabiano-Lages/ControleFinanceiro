@@ -16,6 +16,7 @@ export const papel: Module<IEstadoPapel, IEstado> = {
    mutations: {
       [mutacaoPapel.LISTA](state, lista: IPapel[]) {
          state.papeis = lista;
+         ordenaLista(state.papeis);
       },
       [mutacaoPapel.ADICIONA](state, papel: IPapel) {
          state.papeis.push(papel);

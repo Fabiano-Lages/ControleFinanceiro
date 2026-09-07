@@ -1,8 +1,14 @@
 <template>
    <div class="principal">
-      <TituloListas valor="Dashboard" />
+      <header>
+         <TituloListas valor="Investimentos" />
+      </header>
       <div>
-         
+         <div>
+            <div>
+               <p>Em desenvolvimento...</p>
+            </div>
+         </div>
       </div>
    </div>
 </template>
@@ -12,7 +18,7 @@
    import TituloListas from '../components/TituloListas.vue';
 
    export default defineComponent({
-      name: "DashBoard",
+      name: "Investimentos",
       components: {
          TituloListas
       }
@@ -20,4 +26,5 @@
 </script>
 
 <style scoped>
+
 </style>

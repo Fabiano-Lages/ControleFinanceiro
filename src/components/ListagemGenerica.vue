@@ -150,19 +150,5 @@
 </script>
 
 <style scoped>
-   .principal {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 2em;
-   }
 
-   .trabalho {
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 50px;
-      margin-top: 5px;
-   }
 </style>

@@ -1,6 +1,7 @@
 <template>
    <ListagemGenerica 
       :lista="lista" 
+      v-if="lista"
       nomeLista="Tipo de investimento" 
       @removeRegistro="removeRegistro"
       @salvarRegistro="salvarRegistro"
