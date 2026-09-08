@@ -8,6 +8,8 @@ import { IEstadoMoeda, moeda } from "./modulos/moeda/index.ts";
 import { Notificacao } from "./mutations.ts";
 import { INotificacao } from "../interfaces/INotificacao.ts";
 
+const segundosNotificacao = 7;
+
 export const key: InjectionKey<Store<IEstado>> = Symbol();
 
 export const store = createStore<IEstado>({
@@ -31,7 +33,7 @@ export const store = createStore<IEstado>({
 
          setTimeout(() => {
                state.notificacoes.splice(state.notificacoes.findIndex(ntf => ntf.id == novaNotificacao.id), 1);
-         }, 5000);
+         }, segundosNotificacao * 1000);
       }
    },
    actions: {

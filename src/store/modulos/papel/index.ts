@@ -53,9 +53,11 @@ export const papel: Module<IEstadoPapel, IEstado> = {
                .then((id) => {
                   papel.id = id;
                   context.commit(mutacaoPapel.ADICIONA, papel);
+                  return(true);
                })
                .catch((error) => {
                   console.error("Erro ao adicionar papel: ", error);
+                  return(false);
                })
          );
       },
@@ -65,9 +67,11 @@ export const papel: Module<IEstadoPapel, IEstado> = {
                .updateData(tabela, papel.id, JSON.parse(JSON.stringify(papel)))
                .then(() => {
                   context.commit(mutacaoPapel.ALTERA, papel);
+                  return(true);
                })
                .catch((error) => {
                   console.error("Erro ao alterar o papel: ", error);
+                  return(false);
                })
          );
       },
@@ -77,16 +81,21 @@ export const papel: Module<IEstadoPapel, IEstado> = {
                .findData("investimento", "idPapel", id.toString())
                .then((existe : boolean) => {
                   if (!existe) {
-                     banco
-                        .deleteData(tabela, id)
-                        .then(() => {
-                           context.commit(mutacaoPapel.EXCLUI, id);
-                        })
-                        .catch((error) => {
-                           console.error("Erro ao excluir o papel: ", error);
-                        });
+                     return (
+                        banco
+                           .deleteData(tabela, id)
+                           .then(() => {
+                              context.commit(mutacaoPapel.EXCLUI, id);
+                              return(true);
+                           })
+                           .catch((error) => {
+                              console.error("Erro ao excluir o papel: ", error);
+                              return(false);
+                           })
+                     );
                   } else {
                      console.error("Erro ao excluir o papel: Papel está vinculado a um papel.");
+                     return(false);
                   }
                })
          );

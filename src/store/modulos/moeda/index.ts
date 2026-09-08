@@ -53,9 +53,11 @@ export const moeda: Module<IEstadoMoeda, IEstado> = {
                .then((id) => {
                   moeda.id = id;
                   context.commit(mutacaoMoeda.ADICIONA, moeda);
+                  return(true);
                })
                .catch((error) => {
                   console.error("Erro ao adicionar moeda: ", error);
+                  return(false);
                })
          );
       },
@@ -65,9 +67,11 @@ export const moeda: Module<IEstadoMoeda, IEstado> = {
                .updateData(tabela, moeda.id, moeda)
                .then(() => {
                   context.commit(mutacaoMoeda.ALTERA, moeda);
+                  return(true);
                })
                .catch((error) => {
                   console.error("Erro ao alterar moeda: ", error);
+                  return(false);
                })
          );
       },
@@ -77,20 +81,26 @@ export const moeda: Module<IEstadoMoeda, IEstado> = {
                .findData("investimento", "idMoeda", id.toString())
                .then((existe : boolean) => {
                   if (!existe) {
-                     banco
-                        .deleteData(tabela, id)
-                        .then(() => {
-                           context.commit(mutacaoMoeda.EXCLUI, id);
-                        })
-                        .catch((error) => {
-                           console.error("Erro ao excluir moeda: ", error);
-                        });
+                     return (
+                        banco
+                           .deleteData(tabela, id)
+                           .then(() => {
+                              context.commit(mutacaoMoeda.EXCLUI, id);
+                              return(true);
+                           })
+                           .catch((error) => {
+                              console.error("Erro ao excluir moeda: ", error);
+                              return(false);
+                           })
+                     );
                   } else {
                      console.error("Erro ao excluir moeda: Moeda está vinculada a um investimento.");
+                     return(false);
                   }
                })
                .catch((error) => {
                   console.error("Erro ao verificar vinculo de moeda: ", error);
+                  return(false);
                })
          );
       }

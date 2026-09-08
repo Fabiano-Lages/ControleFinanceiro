@@ -53,9 +53,11 @@ export const corretora: Module<IEstadoCorretora, IEstado> = {
                .then((id) => {
                   corretora.id = id;
                   context.commit(mutacaoCorretora.ADICIONA, corretora);
+                  return(true);
                })
                .catch((error) => {
                   console.error("Erro ao adicionar corretora: ", error);
+                  return(false);
                })
          );
       },
@@ -65,9 +67,11 @@ export const corretora: Module<IEstadoCorretora, IEstado> = {
                .updateData(tabela, corretora.id, corretora)
                .then(() => {
                   context.commit(mutacaoCorretora.ALTERA, corretora);
+                  return(true);
                })
                .catch((error) => {
                   console.error("Erro ao alterar corretora: ", error);
+                  return(false);
                })
          );
       },
@@ -77,20 +81,24 @@ export const corretora: Module<IEstadoCorretora, IEstado> = {
                .findData("investimento", "idCorretora", id.toString())
                .then((existe : boolean) => {
                   if (!existe) {
-                     banco
+                     return banco
                         .deleteData(tabela, id)
                         .then(() => {
                            context.commit(mutacaoCorretora.EXCLUI, id);
+                           return(true);
                         })
                         .catch((error) => {
                            console.error("Erro ao excluir corretora: ", error);
+                           return(false);
                         });
                   } else {
                      console.error("Erro ao excluir tipo de investimento: Tipo de investimento está vinculado a um papel.");
+                     return(false);
                   }
                })
                .catch((error) => {
                   console.error("Erro ao verificar vinculo de corretora: ", error);
+                  return(false);
                })
          );
       }

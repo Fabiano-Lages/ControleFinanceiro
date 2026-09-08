@@ -53,9 +53,11 @@ export const tipoInvestimento: Module<IEstadoTipoInvestimento, IEstado> = {
                .then((id) => {
                   tipoInvestimento.id = id;
                   context.commit(mutacaoTipoInvestimento.ADICIONA, tipoInvestimento);
+                  return(true);
                })
                .catch((error) => {
                   console.error("Erro ao adicionar tipo de investimento: ", error);
+                  return(false);
                })
          );
       },
@@ -65,9 +67,11 @@ export const tipoInvestimento: Module<IEstadoTipoInvestimento, IEstado> = {
                .updateData(tabela, tipoInvestimento.id, tipoInvestimento)
                .then(() => {
                   context.commit(mutacaoTipoInvestimento.ALTERA, tipoInvestimento);
+                  return(true);
                })
                .catch((error) => {
                   console.error("Erro ao alterar tipo de investimento: ", error);
+                  return(false);
                })
          );
       },
@@ -77,16 +81,21 @@ export const tipoInvestimento: Module<IEstadoTipoInvestimento, IEstado> = {
                .findData("papel", "idTipoInvestimento", id.toString())
                .then((existe : boolean) => {
                   if (!existe) {
-                     banco
-                        .deleteData(tabela, id)
-                        .then(() => {
-                           context.commit(mutacaoTipoInvestimento.EXCLUI, id);
-                        })
-                        .catch((error) => {
-                           console.error("Erro ao excluir tipo de investimento: ", error);
-                        });
+                     return (
+                           banco
+                              .deleteData(tabela, id)
+                              .then(() => {
+                                 context.commit(mutacaoTipoInvestimento.EXCLUI, id);
+                                 return(true);
+                              })
+                              .catch((error) => {
+                                 console.error("Erro ao excluir tipo de investimento: ", error);
+                                 return(false);
+                              })
+                     );
                   } else {
                      console.error("Erro ao excluir tipo de investimento: Tipo de investimento está vinculado a um papel.");
+                     return(false);
                   }
                })
          );

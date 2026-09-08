@@ -4,7 +4,7 @@
             v-for="notificacao in notificacoes" 
             :key="notificacao.id" 
             class="message" 
-            :class="`is-${notificacao.tipo}`"
+            :class="`alert alert-${notificacao.tipo}`"
         >
             <div class="message-header">
                 {{ notificacao.titulo }}
@@ -35,6 +35,7 @@
     .notificacoes {
         position: absolute;
         right: 0;
+        bottom: 0;
         width: 300px;
         padding: 8px;
         z-index: 5;
