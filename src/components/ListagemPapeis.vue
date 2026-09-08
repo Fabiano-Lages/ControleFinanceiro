@@ -37,6 +37,8 @@
    import ControlesEdicao from "../components/ControlesEdicao.vue";
    import FormularioPapel from "../components/FormularioPapel.vue";
    import TituloListas from "../components/TituloListas.vue";
+   import { TipoNotificacao } from '../interfaces/INotificacao.ts';
+   import useNotificar from '../hooks/Notificador.ts';
 
    export default defineComponent({
       name: "ListagemPapeis",
@@ -55,6 +57,7 @@
       emits: ["removeRegistro", "salvarRegistro"],
       setup(props,{emit}) {
          const store = useStore();
+         const { notificar } = useNotificar();
          const listaTipo = computed(() => store.state.tipoInvestimento.tipoInvestimentos);
 
          const registro = ref({} as IPapel);
@@ -94,8 +97,18 @@
          };
 
          const salvarRegistro = (regTrab: IPapel) => {
-            emit('salvarRegistro', regTrab);
-            fechaFormulario();
+            const exst = props.lista.find(
+               item => 
+                  item.nome.toLowerCase() === regTrab.nome.toLowerCase() && 
+                  item.idTipoInvestimento === regTrab.idTipoInvestimento && 
+                  item.id !== regTrab.id
+            );
+            if(!exst) {
+               emit('salvarRegistro', regTrab);
+               fechaFormulario();
+            } else {
+               notificar(TipoNotificacao.FALHA, 'Tipo de investimento existente', `Já existe um tipo de investimento com o mesmo nome.`);
+            }
          };
 
          const onKeyDown = (event: KeyboardEvent) => {

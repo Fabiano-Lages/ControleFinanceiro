@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-   import { computed, defineComponent, onMounted, ref } from "vue";
+   import { computed, defineComponent, onMounted } from "vue";
    import { useStore } from "../store/index.ts";
    import { acaoPapel, acaoTipoInvestimnento } from "../store/actions.ts";
    import { IPapel } from "../interfaces/IPapel.ts";
@@ -23,7 +23,6 @@
          const store = useStore();
          const lista = computed(() => store.state.papel.papeis);
          const listaTP = computed(() => store.state.tipoInvestimento.tipoInvestimentos);
-         const registro = ref({} as IPapel);
 
          if(!lista.value || lista.value.length === 0) {
             const loadPapel = async () => {
@@ -53,9 +52,9 @@
             }
          };
 
-         const removeRegistro = async () => {
+         const removeRegistro = async (regTrab : IPapel) => {
             if(window.confirm("Deseja realmente excluir?")) {
-               await store.dispatch(acaoPapel.EXCLUI, registro.value.id);
+               await store.dispatch(acaoPapel.EXCLUI, regTrab.id);
             }
          };
 

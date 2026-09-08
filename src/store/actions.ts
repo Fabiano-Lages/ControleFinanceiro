@@ -18,3 +18,10 @@ export const acaoPapel = {
    ALTERA : 'ALTERAR_PAPEL',  
    ADICIONA : 'ADICIONAR_PAPEL'
 };
+
+export const acaoMoeda = {
+   LISTA: "LISTAR_MOEDA",
+   EXCLUI : 'EXCLUIR_MOEDA',
+   ALTERA : 'ALTERAR_MOEDA',  
+   ADICIONA : 'ADICIONAR_MOEDA'
+};

@@ -6,6 +6,7 @@
          <section class="body">
             <router-view />
          </section>
+         <NotificacoesApp />
       </div>
    </main>
 </template>
@@ -14,12 +15,14 @@
    import { defineComponent } from "vue";
    import CabecalhoSite from "./components/CabecalhoSite.vue";
    import MenuSite from "./components/MenuSite.vue";
+   import NotificacoesApp from './components/NotificacoesApp.vue';
 
    export default defineComponent({
       name: "App",
       components: {
          CabecalhoSite,
-         MenuSite
+         MenuSite,
+         NotificacoesApp
       }
    });
 </script>

@@ -15,14 +15,19 @@ const roteador = createRouter({
             component: () => import("../views/ListaCorretoras.vue")
         },
         {
-            path: "/tipoinvestimento",
-            name: "TipoInvestimento",
-            component: () => import("../views/ListaTipoInvestimento.vue")
+            path: "/moeda",
+            name: "Moeda",
+            component: () => import("../views/ListaMoedas.vue")
         },
         {
             path: "/papel",
             name: "Papel",
             component: () => import("../views/ListaPapel.vue")
+        },
+        {
+            path: "/tipoinvestimento",
+            name: "TipoInvestimento",
+            component: () => import("../views/ListaTipoInvestimento.vue")
         },
         {
             path: "/investimentos",

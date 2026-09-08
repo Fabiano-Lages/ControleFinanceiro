@@ -4,6 +4,9 @@ import { IEstado } from "../interfaces/IEstado.ts";
 import { IEstadoCorretora, corretora } from "./modulos/corretora/index.ts";
 import { IEstadoTipoInvestimento, tipoInvestimento } from "./modulos/tipoinvestimento/index.ts";
 import { IEstadoPapel, papel } from "./modulos/papel/index.ts";
+import { IEstadoMoeda, moeda } from "./modulos/moeda/index.ts";
+import { Notificacao } from "./mutations.ts";
+import { INotificacao } from "../interfaces/INotificacao.ts";
 
 export const key: InjectionKey<Store<IEstado>> = Symbol();
 
@@ -17,10 +20,19 @@ export const store = createStore<IEstado>({
       },
       corretora: {} as IEstadoCorretora,
       tipoInvestimento: {} as IEstadoTipoInvestimento,
-      papel: {} as IEstadoPapel
+      papel: {} as IEstadoPapel,
+      moeda: {} as IEstadoMoeda,
+      notificacoes: []
    },
    mutations: {
-      
+      [Notificacao.NOTIFICAR](state, novaNotificacao: INotificacao) {
+         novaNotificacao.id = new Date().getTime();
+         state.notificacoes.push(novaNotificacao);
+
+         setTimeout(() => {
+               state.notificacoes.splice(state.notificacoes.findIndex(ntf => ntf.id == novaNotificacao.id), 1);
+         }, 5000);
+      }
    },
    actions: {
       
@@ -28,7 +40,8 @@ export const store = createStore<IEstado>({
    modules: {
       corretora,
       tipoInvestimento,
-      papel
+      papel,
+      moeda
    }
 });
 

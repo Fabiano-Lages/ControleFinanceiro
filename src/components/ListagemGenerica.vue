@@ -35,6 +35,8 @@
    import ControlesEdicao from "../components/ControlesEdicao.vue";
    import FormularioGenerico from "../components/FormularioGenerico.vue";
    import TituloListas from "../components/TituloListas.vue";
+   import { TipoNotificacao } from '../interfaces/INotificacao.ts';
+   import useNotificar from '../hooks/Notificador.ts';
 
    export default defineComponent({
       name: "ListagemGenerica",
@@ -56,6 +58,7 @@
       },
       setup(props,{emit}) {
          const registro = ref({} as IGenerico);
+         const { notificar } = useNotificar();
          const novo = ref(false);
          const edita = ref(false);
 
@@ -92,9 +95,13 @@
          };
 
          const salvarRegistro = (regTrab: IGenerico) => {
-            emit('salvarRegistro', regTrab);
-            novo.value = false;
-            edita.value = false;
+            const exst = props.lista.find(item => item.nome.toLowerCase() === regTrab.nome.toLowerCase() && item.id !== regTrab.id);
+            if(!exst) {
+               emit('salvarRegistro', regTrab);
+               fechaFormulario();
+            } else {
+               notificar(TipoNotificacao.FALHA, `${props.nomeLista} existente`, `Já existe um(a) ${props.nomeLista.toLowerCase()} com o mesmo nome.`);
+            }
          };
 
          const onKeyDown = (event: KeyboardEvent) => {

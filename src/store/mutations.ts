@@ -18,3 +18,14 @@ export const mutacaoPapel = {
    ALTERA : 'ALTERA_PAPEL',  
    ADICIONA : 'ADICIONA_PAPEL'
 };
+
+export const mutacaoMoeda = {
+   LISTA: "LISTA_MOEDA",
+   EXCLUI : 'EXCLUI_MOEDA',
+   ALTERA : 'ALTERA_MOEDA',  
+   ADICIONA : 'ADICIONA_MOEDA'
+};
+
+export const Notificacao = {
+    NOTIFICAR: 'NOTIFICAR'
+};

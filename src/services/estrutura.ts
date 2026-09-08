@@ -1,3 +1,5 @@
+import { IEstrutura } from "../interfaces/IEstrutura.ts";
+
 export const estrutura = [
    { 
       tabela: 'corretora', 
@@ -12,6 +14,11 @@ export const estrutura = [
    { 
       tabela: 'papel', 
       campos: ["nome", "idTipoInvestimento"],
+      indices: ["nome"]
+   },
+   { 
+      tabela: 'moeda', 
+      campos: ["nome"],
       indices: ["nome"]
    },
    { 
@@ -54,4 +61,4 @@ export const estrutura = [
       campos: ["nome", "email", "senha"],
       indices: ["nome", "email"]
    }
-];
+] as IEstrutura[];

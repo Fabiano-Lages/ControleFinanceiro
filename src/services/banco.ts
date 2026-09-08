@@ -1,3 +1,4 @@
+import { IEstrutura } from "../interfaces/IEstrutura.ts";
 import { estrutura } from "./estrutura.ts";
 
 export const banco = {
@@ -13,28 +14,45 @@ export const banco = {
                   console.warn("Armazenamento persistente não garantido.");
                }
 
-               const request = indexedDB.open(this.nomeBanco, 1);
-               request.onupgradeneeded = function(event) {
-                  banco.criaBanco(event.target as IDBOpenDBRequest)
-                     .then(() => {
-                        console.log('Banco criado com sucesso');
-                     })
-                     .catch((error) => {
-                        console.error('Erro ao criar o banco: ', error);
-                     });
-               };
-         
-               request.onsuccess = function(event) {
-                  if (event.target) {
-                     banco.db = (event.target as IDBOpenDBRequest).result;
-                  }
-                  resolve();
-               };
-            
-               request.onerror = function(event) {
-                  reject('Erro de banco: ' + (event.target as IDBRequest).error?.name);
-               };
+               this.abrirBanco(this.nomeBanco)
+                  .then(() => resolve())
+                  .catch((error) => reject(error));
             });
+         })
+      );
+   },
+   abrirBanco: function(nomeBanco: string, versao?: number) : Promise<void> {
+      return(
+         new Promise((resolve, reject) => {
+            const request = versao === undefined
+               ? indexedDB.open(nomeBanco)
+               : indexedDB.open(nomeBanco, versao);
+
+               request.onupgradeneeded = function(event) {
+                  try {
+                     banco.criaBanco(event.target as IDBOpenDBRequest);
+                  } catch(error)  {
+                     reject(error);
+                  }
+               };
+
+            request.onsuccess = function() {
+               banco.db = request.result;
+
+               banco.db.onversionchange = () => {
+                  banco.db?.close();
+               };
+
+               resolve();
+            };
+   
+            request.onerror = function() {
+               reject('Erro de banco: ' + request.error?.name);
+            };
+            
+            request.onblocked = () => {
+               reject('A abertura do banco foi bloqueada.');
+            };
          })
       );
    },
@@ -164,47 +182,79 @@ export const banco = {
          })
       );
    },
+   criaTabela: function(db : IDBDatabase, estr : IEstrutura) {
+      const objectStore : IDBObjectStore = db.createObjectStore(estr.tabela, { keyPath: 'id', autoIncrement: true });
+      estr.indices.forEach((indice : string, n : number) => {
+         const nome  = indice.replace("*","");
+         objectStore.createIndex((estr.tabela + "-" + n), (nome.indexOf(",") > -1 ? nome.split(',') : nome), { unique: indice.startsWith("*") });
+      });
+   },
    criaBanco: function(target : IDBOpenDBRequest) : Promise<void> {
       return(
          new Promise((resolve, reject) => {
             if (target) {
                this.db = target.result;
+               const meuBanco = this.db;
                
-               estrutura.forEach(estr => {
-                  if(this.db) {
-                     const objectStore : IDBObjectStore = this.db.createObjectStore(estr.tabela, { keyPath: 'id', autoIncrement: true });
-                     estr.indices.forEach((indice : string, n : number) => {
-                        const nome  = indice.replace("*","");
-                        objectStore.createIndex((estr.tabela + "-" + n), (nome.indexOf(",") > -1 ? nome.split(',') : nome), { unique: indice.startsWith("*") });
-                     });
-                  }
-               });
-               resolve();
+               if(meuBanco) {
+                  estrutura.forEach(estr => {
+                     if(!meuBanco.objectStoreNames.contains(estr.tabela)) {
+                        this.criaTabela(meuBanco, estr);
+                     }                  
+                  });
+               
+                  resolve();
+               } else {
+                  reject('Banco não inicializado');
+               }
             } else {
                reject('Banco não inicializado');
             }
          })
       );
    },
-   listaRegistros: (tabela : string) : Promise<object[]> => {
+   garanteTabela: function(tabela : string) : Promise<void> {
       return(
          new Promise((resolve, reject) => {
-            if(banco.db) {
-               const transaction = banco.db.transaction(tabela, 'readonly');
-               const objectStore = transaction.objectStore(tabela);
-               const request = objectStore.getAll();
-               request.onsuccess = function(event) {
-                  resolve((event.target as IDBRequest).result);
-               };
-            
-               request.onerror = function(event) {
-                  reject((event.target as IDBRequest).error?.name);
-               };
-            } else {
+            const spec = estrutura.find((e) => e.tabela === tabela);
+
+            if(!banco.db) {
                reject('Banco não inicializado');
+            } else if(!spec) {
+               reject('Tabela não encontrada na estrutura: ' + tabela);
+            } else if(banco.db.objectStoreNames.contains(tabela)) {
+               resolve();
+            } else {
+               const novaVersao = banco.db.version + 1;
+               banco.db.close();
+
+               this.abrirBanco(banco.nomeBanco, novaVersao)
+                  .then(resolve)
+                  .catch(reject);
             }
          })
       );
+   },
+   listaRegistros: async (tabela : string) : Promise<object[]> => {
+      await banco.garanteTabela(tabela);
+      if(banco.db) {
+         return(
+            new Promise((resolve, reject) => {
+                  const transaction = banco.db!.transaction(tabela, 'readonly');
+                  const objectStore = transaction.objectStore(tabela);
+                  const request = objectStore.getAll();
+                  request.onsuccess = function(event) {
+                     resolve((event.target as IDBRequest).result);
+                  };
+               
+                  request.onerror = function(event) {
+                     reject((event.target as IDBRequest).error?.name);
+                  };
+               })
+            );
+      } else {
+         throw new Error('Banco não inicializado');
+      }
    },
    importDatabase: (bancoJson: Record<string, object[]>) => {
       return(

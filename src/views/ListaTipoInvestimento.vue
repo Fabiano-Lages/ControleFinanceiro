@@ -48,9 +48,9 @@
             }
          };
 
-         const removeRegistro = async (registro: IGenerico) => {
+         const removeRegistro = async (regTrab: IGenerico) => {
             if(window.confirm("Deseja realmente excluir?")) {
-               await store.dispatch(acaoTipoInvestimnento.EXCLUI, registro.id);
+               await store.dispatch(acaoTipoInvestimnento.EXCLUI, regTrab.id);
             }
          };
 
