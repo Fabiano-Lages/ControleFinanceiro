@@ -28,13 +28,16 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=-1
+current_page=0
+FILE_NAME_0=1514;HTML;0;EUTF-8;0;1;0;%2Fhome%2Ffabianolages%2FRepositórios%2Fjavascript%2FControleFinanceiro%2Fsrc%2Fcomponents%2FTabelaInvestimento.vue;0;3
+FILE_NAME_1=823;HTML;0;EUTF-8;0;1;0;%2Fhome%2Ffabianolages%2FRepositórios%2Fjavascript%2FControleFinanceiro%2Fsrc%2Fcomponents%2FRegistroInvestimento.vue;0;3
+FILE_NAME_2=956;None;0;EUTF-8;0;1;0;%2Fhome%2Ffabianolages%2FRepositórios%2Fjavascript%2FControleFinanceiro%2Fsrc%2Fcomponents%2FControleFiltroInvestimento.vue;0;3
 
 [VTE]
 last_dir=/home/fabianolages
 
 [prjorg]
-expanded_paths=/home/fabianolages/Repositórios/javascript/ControleFinanceiro/src\\components;/home/fabianolages/Repositórios/javascript/ControleFinanceiro/src\\hooks;
+expanded_paths=/home/fabianolages/Repositórios/javascript/ControleFinanceiro/src/components;/home/fabianolages/Repositórios/javascript/ControleFinanceiro/src/views;
 source_patterns=*.c;*.C;*.cpp;*.cxx;*.c++;*.cc;*.m;
 header_patterns=*.h;*.H;*.hpp;*.hxx;*.h++;*.hh;
 ignored_dirs_patterns=.*;CVS;
