@@ -6,8 +6,10 @@
       <div class="trabalho">
          <div class="controle">
             <ControleFiltroInvestimento />
-            <ControleInvestimento />
-            <ControleMovimento />
+            <div class="pnBotoes">
+               <ControleInvestimento />
+               <ControleMovimento />
+            </div>
          </div>
          <div class="corpo">
             <TabelaInvestimento />
@@ -42,10 +44,17 @@
    }
 
    .controle {
-      width: 97%;
+      width: 95%;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       gap: 50px;
+      margin: auto;
+   }
+
+   .pnBotoes {
+      min-width: 320px;
+      display: flex;
+      justify-content: space-between;
    }
 
    .corpo {
