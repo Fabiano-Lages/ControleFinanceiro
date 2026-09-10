@@ -23,18 +23,18 @@ export const estrutura = [
    },
    { 
       tabela: 'investimento', 
-      campos: ["idCorretora", "idPapel", "quantidade", "custoMedio", "valorInvestido", "valorAtual"],
-      indices: ["nome", "*idCorretora,idPapel"]
+      campos: ["idCorretora", "idPapel", "tipo", "moeda", "quantidade", "custoMedio", "valorInvestido", "valorLocal", "Taxa", "valorReal"],
+      indices: ["nome", "*idCorretora, idPapel"]
    },
    {
       tabela: 'historicoPreco',
-      campos: ["idInvestimento", "data", "quantidade", "valorUnitarioUS", "valorAtualUS", "cotacaoUS", "valorUnitario", "valorAtual"],
+      campos: ["idInvestimento", "data", "quantidade", "valorUnitarioLocal", "valorAtualLocal",  "taxa", "valorUnitario", "valorAtual", "diferenca", "percentual"],
       indices: ["idInvestimento", "data"]
    },
    {
       tabela: 'historicoCotacao',
-      campos: ["data", "valor"],
-      indices: ["data"]
+      campos: ["data", "idMoeda", "taxa"],
+      indices: ["taxa"]
    },
    {
       tabela: 'historicoDividendos',
@@ -58,7 +58,7 @@ export const estrutura = [
    },
    {
       tabela: "usuario",
-      campos: ["nome", "email", "senha"],
+      campos: ["nome", "email", "senha", "password"],
       indices: ["nome", "email"]
    }
 ] as IEstrutura[];
